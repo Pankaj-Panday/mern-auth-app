@@ -9,6 +9,8 @@ import {
   IconButton,
   Paper,
   Link,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -51,6 +53,19 @@ const Signup = () => {
     email: "",
     password: "",
   });
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+
+  const handleClose = () => {
+    setSnackbar((prev) => ({
+      ...prev,
+      open: false,
+    }));
+  };
 
   const handleMouseDownPassword = () => setShowPassword(true);
   const handleMouseUpPassword = () => setShowPassword(false);
@@ -103,7 +118,7 @@ const Signup = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(info),
+      body: JSON.stringify({ name, email, password }),
     })
       .then((res) => {
         return res.json();
@@ -112,6 +127,20 @@ const Signup = () => {
         const { success, message } = data;
         if (!success) {
           // some toast notifcation maybe
+          setSnackbar({
+            open: true,
+            message: message,
+            severity: "error",
+          });
+        } else {
+          setSnackbar({
+            open: true,
+            message: "Signed up sucessfully",
+            severity: "success",
+          });
+          setTimeout(() => {
+            navigate("/login");
+          }, 1000);
         }
       })
       .catch((err) => {});
@@ -191,11 +220,29 @@ const Signup = () => {
         </Box>
         <Typography variant="body2">
           Already have an account?{" "}
-          <span>
-            <Link href="/login">Log in</Link>
-          </span>
+          <Link
+            component="span"
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </Link>
         </Typography>
       </Paper>
+      <Snackbar
+        open={snackbar.open}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        autoHideDuration={5000}
+        onClose={handleClose}
+      >
+        <Alert
+          variant="filled"
+          severity={snackbar.severity}
+          onClose={handleClose}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

@@ -10,14 +10,16 @@ import verifyToken from "./middlewares/authMiddleware.js";
 
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    // origin: process.env.CORS_ORIGIN,
+    origin: "http://localhost:5173",
+    credentials: true, // allow cookies with request from frontend
   })
 );
-app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("api is running");
@@ -27,7 +29,6 @@ app.use("/api/auth", authRouter);
 
 // just for testing if protected routes are working or not
 app.get("/api/products", verifyToken, (req, res) => {
-  console.log(req.user);
   res.status(200).json({
     success: true,
     data: [

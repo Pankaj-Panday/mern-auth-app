@@ -10,6 +10,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
    * second is using req.headers.<header-name> or req.headers['<header-name>']
    * the second way is not written in express docs but it is a feature of node js
    */
+
   const token =
     req.cookies?.token || req.header("Authorization")?.split(" ")[1];
 

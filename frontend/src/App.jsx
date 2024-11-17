@@ -3,16 +3,28 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
       children: [
-        { index: true, element: <Login /> },
+        {
+          index: true,
+          element: (
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          ),
+        },
         {
           path: "home",
-          element: <Home />,
+          element: (
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "login",

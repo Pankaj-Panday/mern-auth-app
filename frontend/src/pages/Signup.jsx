@@ -15,6 +15,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
+import useRedirectIfLoggedIn from "../hooks/useRedirectIfLoggedIn";
 
 const classes = {
   formContainer: {
@@ -39,6 +40,7 @@ const classes = {
 };
 
 const Signup = () => {
+  useRedirectIfLoggedIn();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
